@@ -19,6 +19,7 @@ export const LIGHT_LABELS = [
   "use_light_color",
   "show_color_temp_control",
   "show_color_control",
+  "auto_entity",
 ];
 
 const computeSchema = memoizeOne(
@@ -38,6 +39,10 @@ const computeSchema = memoizeOne(
       ],
     },
     ...computeAppearanceFormSchema(localize),
+    {
+      name: "auto_entity",
+      selector: { entity: { domain: ["input_boolean"] } },
+    },
     {
       type: "grid",
       name: "",

@@ -27,6 +27,7 @@ All the options are available in the lovelace editor but you can use `yaml` if y
 | `show_color_control`      | boolean                                             | `false`     | Show a slider to control RGB color                                                              |
 | `collapsible_controls`    | boolean                                             | `false`     | Collapse controls when off. When used in section, it can produce a layout shift for cards below |
 | `use_light_color`         | boolean                                             | `false`     | Colorize the icon and slider according light temperature or color                               |
+| `auto_entity`             | string                                              | Optional    | Entity toggled by an optional auto button in the card's top-right corner. Hidden when not set   |
 | `tap_action`              | action                                              | `toggle`    | Home assistant action to perform on tap                                                         |
 | `hold_action`             | action                                              | `more-info` | Home assistant action to perform on hold                                                        |
 | `double_tap_action`       | action                                              | `more-info` | Home assistant action to perform on double_tap                                                  |

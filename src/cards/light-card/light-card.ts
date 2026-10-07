@@ -177,6 +177,16 @@ export class LightCard
     handleAction(this, this.hass!, this._config!, ev.detail.action!);
   }
 
+  private _onAutoTap(ev: Event): void {
+    ev.stopPropagation();
+    const entityId = this._config?.auto_entity;
+    if (!entityId || !this.hass) return;
+    if (!this.hass.states[entityId]) return;
+    this.hass.callService(entityId.split(".")[0], "toggle", {
+      entity_id: entityId,
+    });
+  }
+
   protected render() {
     if (!this._config || !this.hass || !this._config.entity) {
       return nothing;
@@ -204,6 +214,17 @@ export class LightCard
     }
 
     const rtl = computeRTL(this.hass);
+
+    const autoStateObj = this._config.auto_entity
+      ? this.hass.states[this._config.auto_entity]
+      : undefined;
+    const autoActive = autoStateObj ? isActive(autoStateObj) : false;
+    const autoStyle = autoActive
+      ? {
+          "--icon-color": "rgb(var(--rgb-state-light))",
+          "--bg-color": "rgba(var(--rgb-state-light), 0.2)",
+        }
+      : {};
 
     const isControlVisible =
       (!this._config.collapsible_controls || isActive(stateObj)) &&
@@ -238,6 +259,22 @@ export class LightCard
               `
             : nothing}
         </mushroom-card>
+        ${autoStateObj
+          ? html`
+              <mushroom-button
+                class="auto-button"
+                .title=${autoStateObj.attributes.friendly_name ?? "Auto"}
+                style=${styleMap(autoStyle)}
+                @click=${this._onAutoTap}
+              >
+                <ha-icon
+                  .icon=${autoActive
+                    ? "mdi:lightbulb-auto"
+                    : "mdi:lightbulb-auto-outline"}
+                ></ha-icon>
+              </mushroom-button>
+            `
+          : nothing}
       </ha-card>
     `;
   }
@@ -345,6 +382,16 @@ export class LightCard
         mushroom-light-color-temp-control,
         mushroom-light-color-control {
           flex: 1;
+        }
+        ha-card {
+          position: relative;
+        }
+        .auto-button {
+          position: absolute;
+          top: var(--spacing);
+          inset-inline-end: var(--spacing);
+          --control-height: var(--mush-auto-button-height, 36px);
+          z-index: 1;
         }
       `,
     ];

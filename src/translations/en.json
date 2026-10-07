@@ -54,6 +54,7 @@
       },
       "light": {
         "incompatible_controls": "Some controls may not be displayed if your light does not support the feature.",
+        "auto_entity": "Auto entity",
         "show_brightness_control": "Brightness control?",
         "show_color_control": "Color control?",
         "show_color_temp_control": "Color temperature control?",
